@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { doc, getDoc, updateDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { auth, db } from "./firebase/config";
 import Login from "./components/Login";
@@ -11,6 +11,7 @@ import AnnouncementForm from "./components/AnnouncementForm";
 import ClassSizeManager from "./components/ClassSizeManager";
 import ClassManager from "./components/ClassManager";
 import AddStudentForm from "./components/AddStudentForm";
+import EditStudentForm from "./components/EditStudentForm";
 import FeesManager from "./components/FeesManager";
 
 function App() {
@@ -19,9 +20,19 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
   const [viewingStudent, setViewingStudent] = useState(null);
+  const [editingStudent, setEditingStudent] = useState(null);
   const [myStudentRecord, setMyStudentRecord] = useState(null);
   const [myTeacherClass, setMyTeacherClass] = useState(null);
   const [classList, setClassList] = useState([]);
+
+  const refreshStudents = async () => {
+    const studentsSnapshot = await getDocs(collection(db, "students"));
+    const studentsList = studentsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setStudents(studentsList);
+  };
 
   const handleLogin = async (loggedInUser) => {
     setUser(loggedInUser);
@@ -42,12 +53,7 @@ function App() {
     }
 
     if (userRole === "admin") {
-      const studentsSnapshot = await getDocs(collection(db, "students"));
-      const studentsList = studentsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setStudents(studentsList);
+      await refreshStudents();
     }
 
     if (userRole === "student") {
@@ -68,8 +74,17 @@ function App() {
     setRole(null);
     setStudents([]);
     setViewingStudent(null);
+    setEditingStudent(null);
     setMyStudentRecord(null);
     setMyTeacherClass(null);
+  };
+
+  const handleDeleteStudent = async (studentId) => {
+    if (!window.confirm("Are you sure you want to delete this student record? This cannot be undone.")) {
+      return;
+    }
+    await deleteDoc(doc(db, "students", studentId));
+    await refreshStudents();
   };
 
   if (!user) {
@@ -119,17 +134,19 @@ function App() {
 
         <ClassManager onClassesUpdated={setClassList} />
 
-        <AddStudentForm
-          classList={classList}
-          onStudentAdded={async () => {
-            const studentsSnapshot = await getDocs(collection(db, "students"));
-            const studentsList = studentsSnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setStudents(studentsList);
-          }}
-        />
+        <AddStudentForm classList={classList} onStudentAdded={refreshStudents} />
+
+        {editingStudent && (
+          <EditStudentForm
+            student={editingStudent}
+            classList={classList}
+            onCancel={() => setEditingStudent(null)}
+            onSaved={async () => {
+              await refreshStudents();
+              setEditingStudent(null);
+            }}
+          />
+        )}
 
         <h2>Students</h2>
         <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
@@ -141,7 +158,7 @@ function App() {
               <th>Guardian</th>
               <th>Guardian Phone</th>
               <th>Medical Report</th>
-              <th>Report Card</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -154,7 +171,9 @@ function App() {
                 <td>{student.guardianPhone}</td>
                 <td>{student.medicalReport || "None"}</td>
                 <td>
-                  <button onClick={() => setViewingStudent(student)}>View</button>
+                  <button onClick={() => setViewingStudent(student)}>View</button>{" "}
+                  <button onClick={() => setEditingStudent(student)}>Edit</button>{" "}
+                  <button onClick={() => handleDeleteStudent(student.id)}>Delete</button>
                 </td>
               </tr>
             ))}

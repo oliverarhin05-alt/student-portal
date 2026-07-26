@@ -60,9 +60,7 @@ function Login({ onLogin }) {
           🎓
         </div>
         <h2 style={{ margin: "0 0 5px", color: "#1a1a2e" }}>School Portal</h2>
-        <p style={{ margin: "0 0 25px", color: "#777", fontSize: "14px" }}>
-          Sign in to continue
-        </p>
+        <p style={{ margin: "0 0 25px", color: "#777", fontSize: "14px" }}>Sign in to continue</p>
 
         <form onSubmit={handleLogin}>
           <input
@@ -97,9 +95,7 @@ function Login({ onLogin }) {
               fontSize: "14px",
             }}
           />
-          {error && (
-            <p style={{ color: "#e63946", fontSize: "13px", marginBottom: "12px" }}>{error}</p>
-          )}
+          {error && <p style={{ color: "#e63946", fontSize: "13px", marginBottom: "12px" }}>{error}</p>}
           <button
             type="submit"
             disabled={loading}
