@@ -9,7 +9,9 @@ import ReportCard from "./components/ReportCard";
 import PhotoUpload from "./components/PhotoUpload";
 import AnnouncementForm from "./components/AnnouncementForm";
 import ClassSizeManager from "./components/ClassSizeManager";
+import ClassManager from "./components/ClassManager";
 import AddStudentForm from "./components/AddStudentForm";
+import FeesManager from "./components/FeesManager";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -18,6 +20,8 @@ function App() {
   const [students, setStudents] = useState([]);
   const [viewingStudent, setViewingStudent] = useState(null);
   const [myStudentRecord, setMyStudentRecord] = useState(null);
+  const [myTeacherClass, setMyTeacherClass] = useState(null);
+  const [classList, setClassList] = useState([]);
 
   const handleLogin = async (loggedInUser) => {
     setUser(loggedInUser);
@@ -30,6 +34,11 @@ function App() {
     if (userDocSnap.exists()) {
       userRole = userDocSnap.data().role;
       setRole(userRole);
+    }
+
+    if (userRole === "teacher") {
+      const teacherClass = userDocSnap.data().class || null;
+      setMyTeacherClass(teacherClass);
     }
 
     if (userRole === "admin") {
@@ -60,6 +69,7 @@ function App() {
     setStudents([]);
     setViewingStudent(null);
     setMyStudentRecord(null);
+    setMyTeacherClass(null);
   };
 
   if (!user) {
@@ -87,10 +97,10 @@ function App() {
             }}
           />
           <ClassSizeManager className={viewingStudent.class} />
+          <FeesManager studentId={viewingStudent.id} />
           <ReportCard
             studentId={viewingStudent.id}
             studentName={viewingStudent.fullName}
-            photoUrl={viewingStudent.photoUrl}
             studentClass={viewingStudent.class}
           />
         </div>
@@ -107,7 +117,10 @@ function App() {
 
         <AnnouncementForm user={user} />
 
+        <ClassManager onClassesUpdated={setClassList} />
+
         <AddStudentForm
+          classList={classList}
           onStudentAdded={async () => {
             const studentsSnapshot = await getDocs(collection(db, "students"));
             const studentsList = studentsSnapshot.docs.map((doc) => ({
@@ -152,7 +165,7 @@ function App() {
   }
 
   if (role === "teacher") {
-    return <TeacherDashboard user={user} onLogout={handleLogout} />;
+    return <TeacherDashboard user={user} onLogout={handleLogout} teacherClass={myTeacherClass} />;
   }
 
   if (role === "student") {

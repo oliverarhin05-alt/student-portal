@@ -27,8 +27,7 @@ function AnnouncementList({ audience }) {
         <div key={a.id} style={{ padding: "10px", border: "1px solid #555", marginBottom: "10px" }}>
           <p>{a.message}</p>
           <small>
-            Posted by {a.postedBy} on{" "}
-            {a.createdAt?.toDate ? a.createdAt.toDate().toLocaleString() : "..."}
+            Posted by {a.postedBy} on {a.createdAt?.toDate ? a.createdAt.toDate().toLocaleString() : "..."}
           </small>
         </div>
       ))}

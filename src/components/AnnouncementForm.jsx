@@ -79,9 +79,7 @@ function AnnouncementForm({ user }) {
             <p>
               <strong>[{a.audience === "staff" ? "Staff" : "Students"}]</strong> {a.message}
             </p>
-            <small>
-              Posted {a.createdAt?.toDate ? a.createdAt.toDate().toLocaleString() : "..."}
-            </small>
+            <small>Posted {a.createdAt?.toDate ? a.createdAt.toDate().toLocaleString() : "..."}</small>
             <br />
             <button onClick={() => handleDelete(a.id)} style={{ marginTop: "5px" }}>
               Delete

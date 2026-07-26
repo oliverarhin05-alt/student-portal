@@ -38,10 +38,7 @@ function PhotoUpload({ studentId, onUploaded }) {
     };
 
     const form = new FormData();
-    form.append(
-      "metadata",
-      new Blob([JSON.stringify(metadata)], { type: "application/json" })
-    );
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
     form.append("file", file);
 
     try {
@@ -56,17 +53,14 @@ function PhotoUpload({ studentId, onUploaded }) {
       const data = await response.json();
 
       if (data.id) {
-        await fetch(
-          `https://www.googleapis.com/drive/v3/files/${data.id}/permissions`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: "Bearer " + token,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ role: "reader", type: "anyone" }),
-          }
-        );
+        await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ role: "reader", type: "anyone" }),
+        });
 
         const photoUrl = `https://drive.google.com/thumbnail?id=${data.id}&sz=w400`;
         setMessage("Photo uploaded successfully!");

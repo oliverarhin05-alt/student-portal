@@ -2,7 +2,7 @@ import { useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-function AddStudentForm({ onStudentAdded }) {
+function AddStudentForm({ onStudentAdded, classList }) {
   const [studentId, setStudentId] = useState("");
   const [fullName, setFullName] = useState("");
   const [studentClass, setStudentClass] = useState("");
@@ -33,7 +33,9 @@ function AddStudentForm({ onStudentAdded }) {
         medicalReport: medicalReport || "",
       });
 
-      setStatus(`Student "${fullName}" added successfully! Remember to create their login account in Firebase Authentication (email: ${email}) and add a matching "users" document with role: student.`);
+      setStatus(
+        `Student "${fullName}" added successfully! Remember to create their login account in Firebase Authentication (email: ${email}) and add a matching "users" document with role: student.`
+      );
 
       setStudentId("");
       setFullName("");
@@ -64,7 +66,12 @@ function AddStudentForm({ onStudentAdded }) {
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label>Class: </label>
-          <input type="text" value={studentClass} onChange={(e) => setStudentClass(e.target.value)} required />
+          <select value={studentClass} onChange={(e) => setStudentClass(e.target.value)} required>
+            <option value="">-- Select Class --</option>
+            {classList && classList.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label>Date of Birth: </label>

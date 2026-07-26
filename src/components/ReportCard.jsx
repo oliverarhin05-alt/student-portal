@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-function ReportCard({ studentId, studentName, photoUrl, studentClass, onBack }) {
+function ReportCard({ studentId, studentName, studentClass, onBack }) {
   const [term, setTerm] = useState("First Term");
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);

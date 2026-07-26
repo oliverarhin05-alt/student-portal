@@ -12,7 +12,7 @@ function getGrade(total) {
   return { grade: "F", remark: "Fail" };
 }
 
-function TeacherDashboard({ user, onLogout }) {
+function TeacherDashboard({ user, onLogout, teacherClass }) {
   const [students, setStudents] = useState([]);
   const [selectedStudentId, setSelectedStudentId] = useState("");
   const [subject, setSubject] = useState("");
@@ -26,11 +26,14 @@ function TeacherDashboard({ user, onLogout }) {
   useEffect(() => {
     const fetchStudents = async () => {
       const snapshot = await getDocs(collection(db, "students"));
-      const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      let list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      if (teacherClass) {
+        list = list.filter((s) => s.class === teacherClass);
+      }
       setStudents(list);
     };
     fetchStudents();
-  }, []);
+  }, [teacherClass]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,7 +86,9 @@ function TeacherDashboard({ user, onLogout }) {
         <h1>Teacher Dashboard</h1>
         <button onClick={onLogout}>Logout</button>
       </div>
-      <p style={{ marginBottom: "20px" }}>Welcome, {user.email}</p>
+      <p style={{ marginBottom: "20px" }}>
+        Welcome, {user.email} {teacherClass && `— Class Teacher for ${teacherClass}`}
+      </p>
 
       <div style={sectionStyle}>
         <h2 style={{ marginTop: 0 }}>Enter Student Score</h2>

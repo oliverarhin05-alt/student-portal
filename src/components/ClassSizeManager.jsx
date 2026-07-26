@@ -24,12 +24,7 @@ function ClassSizeManager({ className }) {
   return (
     <div style={{ marginTop: "10px", marginBottom: "10px" }}>
       <label>Total students in {className}: </label>
-      <input
-        type="number"
-        value={size}
-        onChange={(e) => setSize(e.target.value)}
-        style={{ width: "60px" }}
-      />
+      <input type="number" value={size} onChange={(e) => setSize(e.target.value)} style={{ width: "60px" }} />
       <button onClick={handleSave} style={{ marginLeft: "8px" }}>Save</button>
       {status && <span style={{ marginLeft: "8px" }}>{status}</span>}
     </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ReportCard from "./ReportCard";
 import AnnouncementList from "./AnnouncementList";
+import FeesView from "./FeesView";
 
 function StudentDashboard({ user, studentInfo, onLogout }) {
   const [activeSection, setActiveSection] = useState("profile");
@@ -64,7 +65,6 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
           <ReportCard
             studentId={studentInfo.id}
             studentName={studentInfo.fullName}
-            photoUrl={studentInfo.photoUrl}
             studentClass={studentInfo.class}
           />
         )}
@@ -72,7 +72,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
         {activeSection === "fees" && (
           <div>
             <h2>Fees</h2>
-            <p>Fee information will be available here soon.</p>
+            <FeesView studentId={studentInfo.id} />
           </div>
         )}
 
