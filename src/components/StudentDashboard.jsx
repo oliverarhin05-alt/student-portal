@@ -5,6 +5,7 @@ import FeesView from "./FeesView";
 
 function StudentDashboard({ user, studentInfo, onLogout }) {
   const [activeSection, setActiveSection] = useState("profile");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menuItems = [
     { key: "profile", label: "My Profile" },
@@ -15,8 +16,55 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
   ];
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      <div style={{ width: "220px", background: "#1a1a2e", padding: "20px", color: "white" }}>
+    <div style={{ minHeight: "100vh", position: "relative" }}>
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        style={{
+          position: "fixed",
+          top: "15px",
+          left: "15px",
+          zIndex: 20,
+          background: "#1a1a2e",
+          color: "white",
+          border: "none",
+          padding: "10px 14px",
+          borderRadius: "6px",
+          cursor: "pointer",
+          fontSize: "18px",
+        }}
+      >
+        ☰
+      </button>
+
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.4)",
+            zIndex: 15,
+          }}
+        />
+      )}
+
+      <div
+        style={{
+          width: "220px",
+          background: "#1a1a2e",
+          padding: "20px",
+          color: "white",
+          position: "fixed",
+          top: 0,
+          left: sidebarOpen ? 0 : "-220px",
+          height: "100%",
+          transition: "left 0.25s ease",
+          zIndex: 16,
+        }}
+      >
         <h3>Student Portal</h3>
         <p style={{ fontSize: "14px", opacity: 0.8 }}>{user.email}</p>
         <button onClick={onLogout} style={{ marginBottom: "10px" }}>Logout</button>
@@ -24,7 +72,10 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
         {menuItems.map((item) => (
           <div
             key={item.key}
-            onClick={() => setActiveSection(item.key)}
+            onClick={() => {
+              setActiveSection(item.key);
+              setSidebarOpen(false);
+            }}
             style={{
               padding: "10px 0",
               cursor: "pointer",
@@ -37,7 +88,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
         ))}
       </div>
 
-      <div style={{ flex: 1, padding: "30px" }}>
+      <div style={{ padding: "30px", paddingTop: "70px" }}>
         {activeSection === "profile" && (
           <div>
             <h2>My Profile</h2>

@@ -13,6 +13,7 @@ import ClassManager from "./components/ClassManager";
 import AddStudentForm from "./components/AddStudentForm";
 import EditStudentForm from "./components/EditStudentForm";
 import FeesManager from "./components/FeesManager";
+import DashboardCards from "./components/DashboardCards";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -24,6 +25,8 @@ function App() {
   const [myStudentRecord, setMyStudentRecord] = useState(null);
   const [myTeacherClass, setMyTeacherClass] = useState(null);
   const [classList, setClassList] = useState([]);
+  const [adminSection, setAdminSection] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const refreshStudents = async () => {
     const studentsSnapshot = await getDocs(collection(db, "students"));
@@ -77,6 +80,8 @@ function App() {
     setEditingStudent(null);
     setMyStudentRecord(null);
     setMyTeacherClass(null);
+    setAdminSection("dashboard");
+    setSidebarOpen(false);
   };
 
   const handleDeleteStudent = async (studentId) => {
@@ -122,63 +127,160 @@ function App() {
       );
     }
 
+    const menuItems = [
+      { key: "dashboard", label: "Dashboard" },
+      { key: "announcements", label: "Announcements" },
+      { key: "classes", label: "Manage Classes" },
+      { key: "students", label: "Students" },
+    ];
+
     return (
-      <div style={{ padding: "20px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h1>Admin Dashboard</h1>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-        <p>Welcome, {user.email}</p>
+      <div style={{ minHeight: "100vh", position: "relative" }}>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          style={{
+            position: "fixed",
+            top: "15px",
+            left: "15px",
+            zIndex: 20,
+            background: "#1a1a2e",
+            color: "white",
+            border: "none",
+            padding: "10px 14px",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontSize: "18px",
+          }}
+        >
+          ☰
+        </button>
 
-        <AnnouncementForm user={user} />
-
-        <ClassManager onClassesUpdated={setClassList} />
-
-        <AddStudentForm classList={classList} onStudentAdded={refreshStudents} />
-
-        {editingStudent && (
-          <EditStudentForm
-            student={editingStudent}
-            classList={classList}
-            onCancel={() => setEditingStudent(null)}
-            onSaved={async () => {
-              await refreshStudents();
-              setEditingStudent(null);
+        {sidebarOpen && (
+          <div
+            onClick={() => setSidebarOpen(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "rgba(0,0,0,0.4)",
+              zIndex: 15,
             }}
           />
         )}
 
-        <h2>Students</h2>
-        <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Class</th>
-              <th>Guardian</th>
-              <th>Guardian Phone</th>
-              <th>Medical Report</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student) => (
-              <tr key={student.id}>
-                <td>{student.id}</td>
-                <td>{student.fullName}</td>
-                <td>{student.class}</td>
-                <td>{student.guardianName}</td>
-                <td>{student.guardianPhone}</td>
-                <td>{student.medicalReport || "None"}</td>
-                <td>
-                  <button onClick={() => setViewingStudent(student)}>View</button>{" "}
-                  <button onClick={() => setEditingStudent(student)}>Edit</button>{" "}
-                  <button onClick={() => handleDeleteStudent(student.id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div
+          style={{
+            width: "220px",
+            background: "#1a1a2e",
+            padding: "20px",
+            color: "white",
+            position: "fixed",
+            top: 0,
+            left: sidebarOpen ? 0 : "-220px",
+            height: "100%",
+            transition: "left 0.25s ease",
+            zIndex: 16,
+          }}
+        >
+          <h3>Admin Portal</h3>
+          <p style={{ fontSize: "14px", opacity: 0.8 }}>{user.email}</p>
+          <button onClick={handleLogout} style={{ marginBottom: "10px" }}>Logout</button>
+          <hr />
+          {menuItems.map((item) => (
+            <div
+              key={item.key}
+              onClick={() => {
+                setAdminSection(item.key);
+                setSidebarOpen(false);
+              }}
+              style={{
+                padding: "10px 0",
+                cursor: "pointer",
+                fontWeight: adminSection === item.key ? "bold" : "normal",
+                color: adminSection === item.key ? "#4ea1ff" : "white",
+              }}
+            >
+              {item.label}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ padding: "30px", paddingTop: "70px" }}>
+          {adminSection === "dashboard" && (
+            <div>
+              <h1>Dashboard</h1>
+              <DashboardCards totalStudents={students.length} totalClasses={classList.length} />
+            </div>
+          )}
+
+          {adminSection === "announcements" && (
+            <div>
+              <h1>Announcements</h1>
+              <AnnouncementForm user={user} />
+            </div>
+          )}
+
+          {adminSection === "classes" && (
+            <div>
+              <h1>Manage Classes</h1>
+              <ClassManager onClassesUpdated={setClassList} />
+            </div>
+          )}
+
+          {adminSection === "students" && (
+            <div>
+              <h1>Students</h1>
+
+              <AddStudentForm classList={classList} onStudentAdded={refreshStudents} />
+
+              {editingStudent && (
+                <EditStudentForm
+                  student={editingStudent}
+                  classList={classList}
+                  onCancel={() => setEditingStudent(null)}
+                  onSaved={async () => {
+                    await refreshStudents();
+                    setEditingStudent(null);
+                  }}
+                />
+              )}
+
+              <h2>Student List</h2>
+              <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Guardian</th>
+                    <th>Guardian Phone</th>
+                    <th>Medical Report</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students.map((student) => (
+                    <tr key={student.id}>
+                      <td>{student.id}</td>
+                      <td>{student.fullName}</td>
+                      <td>{student.class}</td>
+                      <td>{student.guardianName}</td>
+                      <td>{student.guardianPhone}</td>
+                      <td>{student.medicalReport || "None"}</td>
+                      <td>
+                        <button onClick={() => setViewingStudent(student)}>View</button>{" "}
+                        <button onClick={() => setEditingStudent(student)}>Edit</button>{" "}
+                        <button onClick={() => handleDeleteStudent(student.id)}>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
