@@ -8,6 +8,8 @@ import StudentDashboard from "./components/StudentDashboard";
 import ReportCard from "./components/ReportCard";
 import PhotoUpload from "./components/PhotoUpload";
 import AnnouncementForm from "./components/AnnouncementForm";
+import ClassSizeManager from "./components/ClassSizeManager";
+import AddStudentForm from "./components/AddStudentForm";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -84,10 +86,12 @@ function App() {
               setViewingStudent({ ...viewingStudent, photoUrl: url });
             }}
           />
+          <ClassSizeManager className={viewingStudent.class} />
           <ReportCard
             studentId={viewingStudent.id}
             studentName={viewingStudent.fullName}
             photoUrl={viewingStudent.photoUrl}
+            studentClass={viewingStudent.class}
           />
         </div>
       );
@@ -100,7 +104,20 @@ function App() {
           <button onClick={handleLogout}>Logout</button>
         </div>
         <p>Welcome, {user.email}</p>
+
         <AnnouncementForm user={user} />
+
+        <AddStudentForm
+          onStudentAdded={async () => {
+            const studentsSnapshot = await getDocs(collection(db, "students"));
+            const studentsList = studentsSnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setStudents(studentsList);
+          }}
+        />
+
         <h2>Students</h2>
         <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
           <thead>
