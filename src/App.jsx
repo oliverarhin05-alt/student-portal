@@ -13,9 +13,11 @@ import ClassManager from "./components/ClassManager";
 import AddStudentForm from "./components/AddStudentForm";
 import EditStudentForm from "./components/EditStudentForm";
 import FeesManager from "./components/FeesManager";
+import FeesOverview from "./components/FeesOverview";
 import DashboardCards from "./components/DashboardCards";
 import TeacherManager from "./components/TeacherManager";
 import AddTeacherForm from "./components/AddTeacherForm";
+import AttendanceReport from "./components/AttendanceReport";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +41,12 @@ function App() {
     setStudents(studentsList);
   };
 
+  const refreshClassList = async () => {
+    const ref = doc(db, "settings", "classList");
+    const snap = await getDoc(ref);
+    setClassList(snap.exists() ? snap.data().classes : []);
+  };
+
   const handleLogin = async (loggedInUser) => {
     setUser(loggedInUser);
     setLoading(true);
@@ -59,6 +67,7 @@ function App() {
 
     if (userRole === "admin") {
       await refreshStudents();
+      await refreshClassList();
     }
 
     if (userRole === "student") {
@@ -135,6 +144,8 @@ function App() {
       { key: "classes", label: "Manage Classes" },
       { key: "students", label: "Students" },
       { key: "teachers", label: "Teachers" },
+      { key: "attendance", label: "Attendance Reports" },
+      { key: "fees", label: "Fees" },
     ];
 
     return (
@@ -231,6 +242,20 @@ function App() {
             <div>
               <h1>Manage Classes</h1>
               <ClassManager onClassesUpdated={setClassList} />
+            </div>
+          )}
+
+          {adminSection === "fees" && (
+            <div>
+              <h1>Fees</h1>
+              <FeesOverview students={students} />
+            </div>
+          )}
+
+          {adminSection === "attendance" && (
+            <div>
+              <h1>Attendance Reports</h1>
+              <AttendanceReport classList={classList} />
             </div>
           )}
 
