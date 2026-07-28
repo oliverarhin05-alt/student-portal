@@ -2,6 +2,7 @@ import { useState } from "react";
 import ReportCard from "./ReportCard";
 import AnnouncementList from "./AnnouncementList";
 import FeesView from "./FeesView";
+import AttendanceHistory from "./AttendanceHistory";
 
 function StudentDashboard({ user, studentInfo, onLogout }) {
   const [activeSection, setActiveSection] = useState("profile");
@@ -10,6 +11,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
   const menuItems = [
     { key: "profile", label: "My Profile" },
     { key: "reportcard", label: "Report Card" },
+    { key: "attendance", label: "Attendance" },
     { key: "fees", label: "Fees" },
     { key: "announcements", label: "Announcements" },
     { key: "about", label: "About School" },
@@ -118,6 +120,13 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
             studentName={studentInfo.fullName}
             studentClass={studentInfo.class}
           />
+        )}
+
+        {activeSection === "attendance" && (
+          <div>
+            <h2>Attendance</h2>
+            <AttendanceHistory studentId={studentInfo.id} studentClass={studentInfo.class} />
+          </div>
         )}
 
         {activeSection === "fees" && (
