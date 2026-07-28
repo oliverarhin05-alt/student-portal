@@ -14,6 +14,8 @@ import AddStudentForm from "./components/AddStudentForm";
 import EditStudentForm from "./components/EditStudentForm";
 import FeesManager from "./components/FeesManager";
 import DashboardCards from "./components/DashboardCards";
+import TeacherManager from "./components/TeacherManager";
+import AddTeacherForm from "./components/AddTeacherForm";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -132,6 +134,7 @@ function App() {
       { key: "announcements", label: "Announcements" },
       { key: "classes", label: "Manage Classes" },
       { key: "students", label: "Students" },
+      { key: "teachers", label: "Teachers" },
     ];
 
     return (
@@ -226,6 +229,17 @@ function App() {
             <div>
               <h1>Manage Classes</h1>
               <ClassManager onClassesUpdated={setClassList} />
+            </div>
+          )}
+
+          {adminSection === "teachers" && (
+            <div>
+              <h1>Teachers</h1>
+              <AddTeacherForm
+                classList={classList}
+                onTeacherAdded={() => window.location.reload()}
+              />
+              <TeacherManager classList={classList} />
             </div>
           )}
 
