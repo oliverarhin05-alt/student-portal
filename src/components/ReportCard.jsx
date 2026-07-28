@@ -59,7 +59,7 @@ function ReportCard({ studentId, studentName, studentClass, onBack }) {
   const average = scores.length > 0 ? (totalOfAll / scores.length).toFixed(1) : 0;
 
   return (
-    <div>
+    <div style={{ maxWidth: "100%", overflowX: "hidden" }}>
       {onBack && (
         <button onClick={onBack} style={{ marginBottom: "15px" }}>
           ← Back
@@ -105,30 +105,32 @@ function ReportCard({ studentId, studentName, studentClass, onBack }) {
         <p>No scores recorded yet for {term}.</p>
       ) : (
         <>
-          <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Class Test</th>
-                <th>Exam</th>
-                <th>Total</th>
-                <th>Grade</th>
-                <th>Remark</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scores.map((s) => (
-                <tr key={s.id}>
-                  <td>{s.subject}</td>
-                  <td>{s.classScore}</td>
-                  <td>{s.examScore}</td>
-                  <td>{s.total}</td>
-                  <td>{s.grade}</td>
-                  <td>{s.remark}</td>
+          <div style={{ overflowX: "auto" }}>
+            <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%", minWidth: "500px" }}>
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Class Test</th>
+                  <th>Exam</th>
+                  <th>Total</th>
+                  <th>Grade</th>
+                  <th>Remark</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {scores.map((s) => (
+                  <tr key={s.id}>
+                    <td>{s.subject}</td>
+                    <td>{s.classScore}</td>
+                    <td>{s.examScore}</td>
+                    <td>{s.total}</td>
+                    <td>{s.grade}</td>
+                    <td>{s.remark}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <p style={{ marginTop: "15px" }}>
             <strong>Average Score:</strong> {average}

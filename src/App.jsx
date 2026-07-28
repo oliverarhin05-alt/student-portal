@@ -176,6 +176,7 @@ function App() {
         <div
           style={{
             width: "220px",
+            maxWidth: "80vw",
             background: "#1a1a2e",
             padding: "20px",
             color: "white",
@@ -185,10 +186,11 @@ function App() {
             height: "100%",
             transition: "left 0.25s ease",
             zIndex: 16,
+            overflowY: "auto",
           }}
         >
           <h3>Admin Portal</h3>
-          <p style={{ fontSize: "14px", opacity: 0.8 }}>{user.email}</p>
+          <p style={{ fontSize: "14px", opacity: 0.8, wordBreak: "break-word" }}>{user.email}</p>
           <button onClick={handleLogout} style={{ marginBottom: "10px" }}>Logout</button>
           <hr />
           {menuItems.map((item) => (
@@ -210,7 +212,7 @@ function App() {
           ))}
         </div>
 
-        <div style={{ padding: "30px", paddingTop: "70px" }}>
+        <div style={{ padding: "20px", paddingTop: "70px", maxWidth: "100%", boxSizing: "border-box", overflowX: "hidden" }}>
           {adminSection === "dashboard" && (
             <div>
               <h1>Dashboard</h1>
@@ -235,10 +237,7 @@ function App() {
           {adminSection === "teachers" && (
             <div>
               <h1>Teachers</h1>
-              <AddTeacherForm
-                classList={classList}
-                onTeacherAdded={() => window.location.reload()}
-              />
+              <AddTeacherForm classList={classList} onTeacherAdded={() => window.location.reload()} />
               <TeacherManager classList={classList} />
             </div>
           )}
@@ -262,36 +261,38 @@ function App() {
               )}
 
               <h2>Student List</h2>
-              <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Class</th>
-                    <th>Guardian</th>
-                    <th>Guardian Phone</th>
-                    <th>Medical Report</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {students.map((student) => (
-                    <tr key={student.id}>
-                      <td>{student.id}</td>
-                      <td>{student.fullName}</td>
-                      <td>{student.class}</td>
-                      <td>{student.guardianName}</td>
-                      <td>{student.guardianPhone}</td>
-                      <td>{student.medicalReport || "None"}</td>
-                      <td>
-                        <button onClick={() => setViewingStudent(student)}>View</button>{" "}
-                        <button onClick={() => setEditingStudent(student)}>Edit</button>{" "}
-                        <button onClick={() => handleDeleteStudent(student.id)}>Delete</button>
-                      </td>
+              <div style={{ overflowX: "auto" }}>
+                <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%", minWidth: "700px" }}>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Class</th>
+                      <th>Guardian</th>
+                      <th>Guardian Phone</th>
+                      <th>Medical Report</th>
+                      <th>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {students.map((student) => (
+                      <tr key={student.id}>
+                        <td>{student.id}</td>
+                        <td>{student.fullName}</td>
+                        <td>{student.class}</td>
+                        <td>{student.guardianName}</td>
+                        <td>{student.guardianPhone}</td>
+                        <td>{student.medicalReport || "None"}</td>
+                        <td>
+                          <button onClick={() => setViewingStudent(student)}>View</button>{" "}
+                          <button onClick={() => setEditingStudent(student)}>Edit</button>{" "}
+                          <button onClick={() => handleDeleteStudent(student.id)}>Delete</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
