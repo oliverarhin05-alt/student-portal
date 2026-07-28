@@ -34,55 +34,48 @@ function TeacherManager({ classList }) {
 
   return (
     <div style={{ marginTop: "20px", maxWidth: "600px" }}>
-      <div style={{ padding: "10px", border: "1px solid #555", marginBottom: "15px" }}>
-        <p>
-          <strong>To add a new teacher:</strong> go to Firebase Console → Authentication → Add user
-          (with their email), then in Firestore → <code>users</code> collection, create a document
-          using that user's UID with fields <code>role: "teacher"</code> and <code>email</code>. Once
-          added, they'll appear in this list where you can assign their class.
-        </p>
-      </div>
-
       {loading ? (
         <p>Loading teachers...</p>
       ) : teachers.length === 0 ? (
         <p>No teachers found yet.</p>
       ) : (
-        <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Assigned Class</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {teachers.map((t) => (
-              <tr key={t.id}>
-                <td>{t.email}</td>
-                <td>
-                  {editingId === t.id ? (
-                    <select value={editClass} onChange={(e) => setEditClass(e.target.value)}>
-                      <option value="">-- Select Class --</option>
-                      {classList && classList.map((c) => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    t.class || "Not assigned"
-                  )}
-                </td>
-                <td>
-                  {editingId === t.id ? (
-                    <button onClick={() => saveClass(t.id)}>Save</button>
-                  ) : (
-                    <button onClick={() => startEdit(t)}>Edit Class</button>
-                  )}
-                </td>
+        <div style={{ overflowX: "auto" }}>
+          <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Assigned Class</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {teachers.map((t) => (
+                <tr key={t.id}>
+                  <td>{t.email}</td>
+                  <td>
+                    {editingId === t.id ? (
+                      <select value={editClass} onChange={(e) => setEditClass(e.target.value)}>
+                        <option value="">-- Select Class --</option>
+                        {classList && classList.map((c) => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      t.class || "Not assigned"
+                    )}
+                  </td>
+                  <td>
+                    {editingId === t.id ? (
+                      <button onClick={() => saveClass(t.id)}>Save</button>
+                    ) : (
+                      <button onClick={() => startEdit(t)}>Edit Class</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

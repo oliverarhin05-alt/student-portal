@@ -3,6 +3,7 @@ import { collection, getDocs, addDoc, serverTimestamp } from "firebase/firestore
 import { db } from "../firebase/config";
 import AnnouncementList from "./AnnouncementList";
 import AttendanceMarker from "./AttendanceMarker";
+import TimetableView from "./TimetableView";
 
 function getGrade(total) {
   if (total >= 90) return { grade: "A", remark: "Excellent" };
@@ -78,6 +79,7 @@ function TeacherDashboard({ user, onLogout, teacherClass }) {
   const menuItems = [
     { key: "scores", label: "Enter Scores" },
     { key: "attendance", label: "Mark Attendance" },
+    { key: "timetable", label: "Timetable" },
     { key: "announcements", label: "Staff Announcements" },
   ];
 
@@ -224,6 +226,13 @@ function TeacherDashboard({ user, onLogout, teacherClass }) {
           <div>
             <h1>Mark Attendance</h1>
             <AttendanceMarker teacherClass={teacherClass} />
+          </div>
+        )}
+
+        {activeSection === "timetable" && (
+          <div>
+            <h1>Timetable</h1>
+            <TimetableView className={teacherClass} />
           </div>
         )}
 

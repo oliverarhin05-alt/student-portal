@@ -18,6 +18,7 @@ import DashboardCards from "./components/DashboardCards";
 import TeacherManager from "./components/TeacherManager";
 import AddTeacherForm from "./components/AddTeacherForm";
 import AttendanceReport from "./components/AttendanceReport";
+import TimetableManager from "./components/TimetableManager";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -145,6 +146,7 @@ function App() {
       { key: "students", label: "Students" },
       { key: "teachers", label: "Teachers" },
       { key: "attendance", label: "Attendance Reports" },
+      { key: "timetable", label: "Timetable" },
       { key: "fees", label: "Fees" },
     ];
 
@@ -242,6 +244,13 @@ function App() {
             <div>
               <h1>Manage Classes</h1>
               <ClassManager onClassesUpdated={setClassList} />
+            </div>
+          )}
+
+          {adminSection === "timetable" && (
+            <div>
+              <h1>Timetable</h1>
+              <TimetableManager classList={classList} />
             </div>
           )}
 

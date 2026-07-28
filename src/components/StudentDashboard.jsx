@@ -3,6 +3,7 @@ import ReportCard from "./ReportCard";
 import AnnouncementList from "./AnnouncementList";
 import FeesView from "./FeesView";
 import AttendanceHistory from "./AttendanceHistory";
+import TimetableView from "./TimetableView";
 
 function StudentDashboard({ user, studentInfo, onLogout }) {
   const [activeSection, setActiveSection] = useState("profile");
@@ -12,6 +13,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
     { key: "profile", label: "My Profile" },
     { key: "reportcard", label: "Report Card" },
     { key: "attendance", label: "Attendance" },
+    { key: "timetable", label: "Timetable" },
     { key: "fees", label: "Fees" },
     { key: "announcements", label: "Announcements" },
     { key: "about", label: "About School" },
@@ -56,6 +58,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
       <div
         style={{
           width: "220px",
+          maxWidth: "80vw",
           background: "#1a1a2e",
           padding: "20px",
           color: "white",
@@ -65,10 +68,11 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
           height: "100%",
           transition: "left 0.25s ease",
           zIndex: 16,
+          overflowY: "auto",
         }}
       >
         <h3>Student Portal</h3>
-        <p style={{ fontSize: "14px", opacity: 0.8 }}>{user.email}</p>
+        <p style={{ fontSize: "14px", opacity: 0.8, wordBreak: "break-word" }}>{user.email}</p>
         <button onClick={onLogout} style={{ marginBottom: "10px" }}>Logout</button>
         <hr />
         {menuItems.map((item) => (
@@ -90,7 +94,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
         ))}
       </div>
 
-      <div style={{ padding: "30px", paddingTop: "70px" }}>
+      <div style={{ padding: "20px", paddingTop: "70px", maxWidth: "100%", boxSizing: "border-box" }}>
         {activeSection === "profile" && (
           <div>
             <h2>My Profile</h2>
@@ -126,6 +130,13 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
           <div>
             <h2>Attendance</h2>
             <AttendanceHistory studentId={studentInfo.id} studentClass={studentInfo.class} />
+          </div>
+        )}
+
+        {activeSection === "timetable" && (
+          <div>
+            <h2>Timetable</h2>
+            <TimetableView className={studentInfo.class} />
           </div>
         )}
 
