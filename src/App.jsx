@@ -151,7 +151,7 @@ function App() {
     ];
 
     return (
-      <div style={{ minHeight: "100vh", position: "relative" }}>
+      <div style={{ minHeight: "100vh", position: "relative", background: "white" }}>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           style={{
@@ -159,7 +159,7 @@ function App() {
             top: "15px",
             left: "15px",
             zIndex: 20,
-            background: "#1a1a2e",
+            background: "#1565C0",
             color: "white",
             border: "none",
             padding: "10px 14px",
@@ -190,7 +190,7 @@ function App() {
           style={{
             width: "220px",
             maxWidth: "80vw",
-            background: "#1a1a2e",
+            background: "#1565C0",
             padding: "20px",
             color: "white",
             position: "fixed",
@@ -203,7 +203,7 @@ function App() {
           }}
         >
           <h3>Admin Portal</h3>
-          <p style={{ fontSize: "14px", opacity: 0.8, wordBreak: "break-word" }}>{user.email}</p>
+          <p style={{ fontSize: "14px", opacity: 0.9, wordBreak: "break-word" }}>{user.email}</p>
           <button onClick={handleLogout} style={{ marginBottom: "10px" }}>Logout</button>
           <hr />
           {menuItems.map((item) => (
@@ -217,7 +217,7 @@ function App() {
                 padding: "10px 0",
                 cursor: "pointer",
                 fontWeight: adminSection === item.key ? "bold" : "normal",
-                color: adminSection === item.key ? "#4ea1ff" : "white",
+                color: adminSection === item.key ? "#FFD54F" : "white",
               }}
             >
               {item.label}
@@ -225,7 +225,7 @@ function App() {
           ))}
         </div>
 
-        <div style={{ padding: "20px", paddingTop: "70px", maxWidth: "100%", boxSizing: "border-box", overflowX: "hidden" }}>
+        <div style={{ padding: "20px", paddingTop: "70px", maxWidth: "100%", boxSizing: "border-box", overflowX: "hidden", color: "#0D2B4E" }}>
           {adminSection === "dashboard" && (
             <div>
               <h1>Dashboard</h1>

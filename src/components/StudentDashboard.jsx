@@ -20,7 +20,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", position: "relative" }}>
+    <div style={{ minHeight: "100vh", position: "relative", background: "white" }}>
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
         style={{
@@ -28,7 +28,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
           top: "15px",
           left: "15px",
           zIndex: 20,
-          background: "#1a1a2e",
+          background: "#1565C0",
           color: "white",
           border: "none",
           padding: "10px 14px",
@@ -59,7 +59,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
         style={{
           width: "220px",
           maxWidth: "80vw",
-          background: "#1a1a2e",
+          background: "#1565C0",
           padding: "20px",
           color: "white",
           position: "fixed",
@@ -72,7 +72,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
         }}
       >
         <h3>Student Portal</h3>
-        <p style={{ fontSize: "14px", opacity: 0.8, wordBreak: "break-word" }}>{user.email}</p>
+        <p style={{ fontSize: "14px", opacity: 0.9, wordBreak: "break-word" }}>{user.email}</p>
         <button onClick={onLogout} style={{ marginBottom: "10px" }}>Logout</button>
         <hr />
         {menuItems.map((item) => (
@@ -86,7 +86,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
               padding: "10px 0",
               cursor: "pointer",
               fontWeight: activeSection === item.key ? "bold" : "normal",
-              color: activeSection === item.key ? "#4ea1ff" : "white",
+              color: activeSection === item.key ? "#FFD54F" : "white",
             }}
           >
             {item.label}
@@ -94,7 +94,7 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
         ))}
       </div>
 
-      <div style={{ padding: "20px", paddingTop: "70px", maxWidth: "100%", boxSizing: "border-box" }}>
+      <div style={{ padding: "20px", paddingTop: "70px", maxWidth: "100%", boxSizing: "border-box", color: "#0D2B4E" }}>
         {activeSection === "profile" && (
           <div>
             <h2>My Profile</h2>

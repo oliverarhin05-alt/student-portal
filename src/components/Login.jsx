@@ -49,7 +49,7 @@ function Login({ onLogin }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(135deg, #1a1a2e, #16213e)",
+        background: "linear-gradient(135deg, #1565C0, #0D47A1)",
         fontFamily: "sans-serif",
       }}
     >
@@ -69,7 +69,7 @@ function Login({ onLogin }) {
             width: "70px",
             height: "70px",
             borderRadius: "50%",
-            background: "#1a1a2e",
+            background: "#1565C0",
             color: "white",
             display: "flex",
             alignItems: "center",
@@ -80,7 +80,7 @@ function Login({ onLogin }) {
         >
           🎓
         </div>
-        <h2 style={{ margin: "0 0 5px", color: "#1a1a2e" }}>School Portal</h2>
+        <h2 style={{ margin: "0 0 5px", color: "#1565C0" }}>School Portal</h2>
 
         {!showReset ? (
           <>
@@ -127,7 +127,7 @@ function Login({ onLogin }) {
                     setResetEmail(email);
                     setResetMessage("");
                   }}
-                  style={{ fontSize: "13px", color: "#1a1a2e", cursor: "pointer", textDecoration: "underline" }}
+                  style={{ fontSize: "13px", color: "#1565C0", cursor: "pointer", textDecoration: "underline" }}
                 >
                   Forgot password?
                 </span>
@@ -142,7 +142,7 @@ function Login({ onLogin }) {
                   padding: "12px",
                   borderRadius: "8px",
                   border: "none",
-                  background: "#1a1a2e",
+                  background: "#1565C0",
                   color: "white",
                   fontSize: "15px",
                   fontWeight: "bold",
@@ -191,7 +191,7 @@ function Login({ onLogin }) {
                   padding: "12px",
                   borderRadius: "8px",
                   border: "none",
-                  background: "#1a1a2e",
+                  background: "#1565C0",
                   color: "white",
                   fontSize: "15px",
                   fontWeight: "bold",
@@ -208,7 +208,7 @@ function Login({ onLogin }) {
                 setShowReset(false);
                 setResetMessage("");
               }}
-              style={{ fontSize: "13px", color: "#1a1a2e", cursor: "pointer", textDecoration: "underline" }}
+              style={{ fontSize: "13px", color: "#1565C0", cursor: "pointer", textDecoration: "underline" }}
             >
               ← Back to login
             </span>

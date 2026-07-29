@@ -15,7 +15,7 @@ function DashboardCards({ totalStudents, totalClasses }) {
   }, []);
 
   const cardStyle = {
-    background: "#1e1e2f",
+    background: "#1565C0",
     color: "white",
     padding: "20px",
     borderRadius: "10px",
