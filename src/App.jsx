@@ -254,10 +254,10 @@ function App() {
             </div>
           )}
 
-          {adminSection === "fees" && (
+         {adminSection === "fees" && (
             <div>
               <h1>Fees</h1>
-              <FeesOverview students={students} />
+              <FeesOverview students={students} classList={classList} />
             </div>
           )}
 
