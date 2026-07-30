@@ -4,6 +4,8 @@ import { db } from "../firebase/config";
 import AnnouncementList from "./AnnouncementList";
 import AttendanceMarker from "./AttendanceMarker";
 import TimetableView from "./TimetableView";
+import DocumentList from "./DocumentList";
+import SettingsPanel from "./SettingsPanel";
 
 function getGrade(total) {
   if (total >= 90) return { grade: "A", remark: "Excellent" };
@@ -80,7 +82,9 @@ function TeacherDashboard({ user, onLogout, teacherClass }) {
     { key: "scores", label: "Enter Scores" },
     { key: "attendance", label: "Mark Attendance" },
     { key: "timetable", label: "Timetable" },
+    { key: "documents", label: "Documents" },
     { key: "announcements", label: "Staff Announcements" },
+    { key: "settings", label: "Settings" },
   ];
 
   return (
@@ -236,10 +240,24 @@ function TeacherDashboard({ user, onLogout, teacherClass }) {
           </div>
         )}
 
+        {activeSection === "documents" && (
+          <div>
+            <h1>Documents</h1>
+            <DocumentList audience="staff" />
+          </div>
+        )}
+
         {activeSection === "announcements" && (
           <div>
             <h1>Staff Announcements</h1>
             <AnnouncementList audience="staff" />
+          </div>
+        )}
+
+        {activeSection === "settings" && (
+          <div>
+            <h1>Settings</h1>
+            <SettingsPanel user={user} />
           </div>
         )}
       </div>

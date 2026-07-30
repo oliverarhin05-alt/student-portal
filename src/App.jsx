@@ -19,6 +19,9 @@ import TeacherManager from "./components/TeacherManager";
 import AddTeacherForm from "./components/AddTeacherForm";
 import AttendanceReport from "./components/AttendanceReport";
 import TimetableManager from "./components/TimetableManager";
+import DocumentUpload from "./components/DocumentUpload";
+import DocumentList from "./components/DocumentList";
+import SettingsPanel from "./components/SettingsPanel";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -147,7 +150,9 @@ function App() {
       { key: "teachers", label: "Teachers" },
       { key: "attendance", label: "Attendance Reports" },
       { key: "timetable", label: "Timetable" },
+      { key: "documents", label: "Documents" },
       { key: "fees", label: "Fees" },
+      { key: "settings", label: "Settings" },
     ];
 
     return (
@@ -254,7 +259,18 @@ function App() {
             </div>
           )}
 
-         {adminSection === "fees" && (
+          {adminSection === "documents" && (
+            <div>
+              <h1>Documents</h1>
+              <DocumentUpload user={user} onUploaded={() => window.location.reload()} />
+              <h2>Students Documents</h2>
+              <DocumentList audience="students" />
+              <h2 style={{ marginTop: "20px" }}>Staff Documents</h2>
+              <DocumentList audience="staff" />
+            </div>
+          )}
+
+          {adminSection === "fees" && (
             <div>
               <h1>Fees</h1>
               <FeesOverview students={students} classList={classList} />
@@ -273,6 +289,13 @@ function App() {
               <h1>Teachers</h1>
               <AddTeacherForm classList={classList} onTeacherAdded={() => window.location.reload()} />
               <TeacherManager classList={classList} />
+            </div>
+          )}
+
+          {adminSection === "settings" && (
+            <div>
+              <h1>Settings</h1>
+              <SettingsPanel user={user} />
             </div>
           )}
 

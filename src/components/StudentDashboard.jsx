@@ -4,6 +4,8 @@ import AnnouncementList from "./AnnouncementList";
 import FeesView from "./FeesView";
 import AttendanceHistory from "./AttendanceHistory";
 import TimetableView from "./TimetableView";
+import DocumentList from "./DocumentList";
+import SettingsPanel from "./SettingsPanel";
 
 function StudentDashboard({ user, studentInfo, onLogout }) {
   const [activeSection, setActiveSection] = useState("profile");
@@ -15,8 +17,10 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
     { key: "attendance", label: "Attendance" },
     { key: "timetable", label: "Timetable" },
     { key: "fees", label: "Fees" },
+    { key: "documents", label: "Documents" },
     { key: "announcements", label: "Announcements" },
     { key: "about", label: "About School" },
+    { key: "settings", label: "Settings" },
   ];
 
   return (
@@ -147,6 +151,13 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
           </div>
         )}
 
+        {activeSection === "documents" && (
+          <div>
+            <h2>Documents</h2>
+            <DocumentList audience="students" />
+          </div>
+        )}
+
         {activeSection === "announcements" && (
           <div>
             <h2>Announcements</h2>
@@ -158,6 +169,13 @@ function StudentDashboard({ user, studentInfo, onLogout }) {
           <div>
             <h2>About School</h2>
             <p>School information will be available here soon.</p>
+          </div>
+        )}
+
+        {activeSection === "settings" && (
+          <div>
+            <h2>Settings</h2>
+            <SettingsPanel user={user} />
           </div>
         )}
       </div>
